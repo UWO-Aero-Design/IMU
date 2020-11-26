@@ -1,7 +1,7 @@
 //Parent Class for IMU
 
 /*
-Copied from aero-cpp-lib/include/sensors.hpp
+Copied from aero-cpp-lib/include/sensors.hpp and aero-cpp-lib/include/data.hpp
 */
 
 #pragma once
@@ -14,8 +14,6 @@ Copied from aero-cpp-lib/include/sensors.hpp
 #endif
 
 //#include "Data.hpp"           //No longer include this?
-
-
 
 /*!
  *  \addtogroup aero
@@ -40,7 +38,7 @@ namespace sensor                //Change sensor to IMU?
 */
 struct __attribute__((__packed__)) IMU_t          //From aero-cpp-lib/include/Data.hpp
 {                                                 //Can this just be added to the class now? How do we need to access stuff?
-    int16_t ax;
+    int16_t ax;                                   //For the stuff from Data, should it be put somewhere else or make it specific to the IMU?
     int16_t ay;
     int16_t az;
     int16_t gx;
@@ -53,6 +51,29 @@ struct __attribute__((__packed__)) IMU_t          //From aero-cpp-lib/include/Da
     int16_t pitch;
     int16_t roll;
 };
+    
+/**
+* @brief Enum class for data signatures of each struct that can be sent
+*/   
+enum class Signature{ Pitot, IMU, GPS, Enviro, Batt, Config, Status, Actuators, AData, Cmds, Drop };               //Since now its only an IMU, dont need the rest here?
+    
+/**
+ * @brief Raw message struct used to represent a unparsed message
+ */
+struct __attribute__((__packed__)) RawMessage_t
+{
+    uint8_t start;       // Start byte for serial transfer
+    uint16_t link;       // Link describes the connection the message is trying to bridge. Sender --> Recipient
+    uint16_t signature;  // Bits for determining what data is being sent
+
+    uint8_t length;
+    uint8_t buffer[200]; // Actual data. Max size
+    
+
+    uint16_t crc;        // Try fast crc
+    uint8_t end;         // End byte for serial transfer
+};
+    
 /**
  * @brief Parsed message
  */
@@ -130,7 +151,7 @@ public:
      * 
      * @return const def::IMU_t& reference to IMU's data struct
      */
-    const def::IMU_t& data(void) { return m_data; }
+    const def::IMU_t& data(void) { return m_data; }                                 //Struct with data is now in this class, so this might need to change?
 
     /**
      * @brief Destructor
