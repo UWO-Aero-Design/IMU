@@ -5,7 +5,7 @@
 #pragma once
 
 // Include for sensor interfaces; imu needed
-#include "ICM20948/Teensy-ICM-20948.h"
+#include "src/ICM20948/Teensy-ICM-20948.h"
 
 /**
    @brief Class for a IMU sensor made by SparkFun

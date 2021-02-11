@@ -484,8 +484,7 @@ void TeensyICM20948::init(TeensyICM20948Settings settings, TwoWire &wirePort)
 
 void TeensyICM20948::task()
 {
-  // inv_icm20948_poll_sensor(&icm_device, (void*)0, build_sensor_event_data);
-  DB_icm20948_get_data_packet(&icm_device, (void*)0, build_sensor_event_data);
+  inv_icm20948_poll_sensor(&icm_device, (void*)0, build_sensor_event_data);
 }
 
 bool TeensyICM20948::gyroDataIsReady()
